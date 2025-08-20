@@ -1,27 +1,92 @@
-# HrApp
+# HR Management System (Angular 8)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.29.
+![Angular](https://img.shields.io/badge/Angular-8-red)
+![Netlify](https://img.shields.io/badge/Netlify-Deployed-brightgreen)
 
-## Development server
+A simple HR Management System built with **Angular 8**, designed to manage employees, salaries, and other HR tasks.  
+You can try it live here: [Demo Link](https://hr-management-system1.netlify.app/)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## 🚀 Features
+- Employee Management (Add, Update, Delete employees)  
+- Salary Management (track multiple salary records, update salaries without losing history)  
+- Dashboard with employee & salary summary  
+- Responsive UI using Angular Material  
+- In-memory API for demo purposes  
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+---
 
-## Build
+## 📸 Screenshots
+### Dashboard
+![Dashboard Screenshot](./screenshots/dashboard.png)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+### Employee List
+![Employee List Screenshot](./screenshots/employee-list.png)
 
-## Running unit tests
+### Add Employee
+![Add Employee Screenshot](./screenshots/employee.png)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Department List
+![Salary Screenshot](./screenshots/department-list.png)
 
-## Running end-to-end tests
+### Candidate List
+![Salary Screenshot](./screenshots/candidate-list.png)
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+### Salary List
+![Salary Screenshot](./screenshots/salary-list.png)
 
-## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+---
+
+## 🛠️ Tech Stack
+- **Frontend**: Angular 8, Angular Material  
+- **Backend (Mock)**: Angular In-Memory Web API  
+- **Deployment**: Netlify  
+
+---
+
+## 📂 Project Structure
+src/
+├── app/
+│   ├── core/
+│   │   └── services/          # Data services
+│   ├── features/
+│   │   ├── dashboard/         # Dashboard component
+│   │   ├── employees/         # Employee management
+│   │   ├── departments/       # Department management
+│   │   ├── candidates/        # Candidate tracking
+│   │   └── salaries/          # Salary management
+│   ├── shared/
+│   │   ├── components/        # Reusable components
+│   │   ├── models/           # TypeScript interfaces
+│   │   └── directives/       # Custom directives
+│   └── app.module.ts         # Root module
+└── assets/                   # Images and static files
+
+
+---
+
+## ⚙️ Setup & Installation
+1. Clone the repository  
+   git clone https://github.com/your-username/hr-management-system.git
+   cd hr-management-system
+2. install dependencies
+    npm install
+3. Run Locally
+    ng serve -o
+4. build for production
+    ng build --prod
+---
+## 🌐 Deployment
+
+This project is deployed on **Netlify**.  
+
+You can try it live here: [Demo Link](https://hr-management-system1.netlify.app/)
+
+---
+
+## 🙌 Author
+
+Developed by **Your Name**.  
+Feel free to connect with me on [LinkedIn](https://www.linkedin.com/in/hadush-brhane/)
+
