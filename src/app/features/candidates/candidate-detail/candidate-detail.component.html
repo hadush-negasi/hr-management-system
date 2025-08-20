@@ -1,0 +1,133 @@
+<div class="candidate-detail-container">
+  <mat-card *ngIf="isLoading" class="loading-card">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    <div class="loading-text">Loading candidate details...</div>
+  </mat-card>
+
+  <div *ngIf="candidate && !isLoading" class="candidate-profile">
+    <!-- Header Section -->
+    <div class="profile-header">
+      <div class="avatar-container">
+        <div class="avatar" [style.background]="avatarColor">
+          {{candidate.name | initials}}
+        </div>
+      </div>
+      
+      <div class="header-content">
+        <h1 class="candidate-name">{{candidate.name}}</h1>
+        <div class="status-container">
+          <mat-chip [color]="getStatusColor(candidate.status || 'Applied')" selected class="status-chip">
+            <mat-icon class="status-icon">
+              {{getStatusIcon(candidate.status || 'Applied')}}
+            </mat-icon>
+            {{candidate.status || 'Applied'}}
+          </mat-chip>
+          <span class="application-date">
+            Applied on {{candidate.applicationDate | date:'mediumDate'}}
+          </span>
+        </div>
+      </div>
+      
+      <div class="action-buttons">
+        <button mat-stroked-button (click)="onEdit()" class="action-button">
+          <mat-icon>edit</mat-icon> Edit
+        </button>
+        <button mat-raised-button color="primary" 
+                *ngIf="candidate && candidate.status === 'Interviewed'"
+                (click)="onHire()" class="action-button">
+          <mat-icon>work</mat-icon> Hire
+        </button>
+        <button mat-stroked-button color="warn" 
+                *ngIf="candidate && (candidate.status === 'Interviewed' || candidate.status === 'Applied')"
+                (click)="onReject()" class="action-button">
+          <mat-icon>block</mat-icon> Reject
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="profile-content">
+      <!-- Left Column -->
+      <div class="left-column">
+        <mat-card class="info-card">
+          <mat-card-header>
+            <mat-card-title>Contact Information</mat-card-title>
+            <mat-card-subtitle>Candidate details</mat-card-subtitle>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <div class="info-item">
+              <mat-icon>email</mat-icon>
+              <div>
+                <div class="info-label">Email</div>
+                <div class="info-value">{{candidate.email}}</div>
+              </div>
+            </div>
+            
+            <div class="info-item">
+              <mat-icon>phone</mat-icon>
+              <div>
+                <div class="info-label">Phone</div>
+                <div class="info-value">{{candidate.phone || 'Not provided'}}</div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="info-card" *ngIf="candidate.resume">
+          <mat-card-header>
+            <mat-card-title>Resume</mat-card-title>
+            <mat-card-subtitle>Candidate documents</mat-card-subtitle>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <a [href]="candidate.resume" target="_blank" mat-stroked-button class="resume-button">
+              <mat-icon>description</mat-icon>
+              View Resume
+            </a>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-column">
+        <mat-card class="info-card">
+          <mat-card-header>
+            <mat-card-title>Application Details</mat-card-title>
+            <mat-card-subtitle>Position information</mat-card-subtitle>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <div class="info-item">
+              <mat-icon>work_outline</mat-icon>
+              <div>
+                <div class="info-label">Applied Position</div>
+                <div class="info-value">{{candidate.appliedPosition}}</div>
+              </div>
+            </div>
+            
+            <div class="info-item">
+              <mat-icon>business</mat-icon>
+              <div>
+                <div class="info-label">Department</div>
+                <div class="info-value">{{department?.name || 'Not specified'}}</div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="action-card">
+          <mat-card-content>
+            <button mat-stroked-button color="warn" (click)="onDelete()" class="delete-button">
+              <mat-icon>delete</mat-icon> Delete Candidate
+            </button>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+
+  <a mat-button routerLink="/candidates" class="back-button">
+    <mat-icon>arrow_back</mat-icon> Back to Candidates
+  </a>
+</div>

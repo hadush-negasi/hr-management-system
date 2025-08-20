@@ -1,0 +1,141 @@
+.employee-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+
+  mat-card {
+    overflow: hidden;
+    padding: 16px;
+  }
+
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    gap: 16px;
+    
+    .search-filters {
+      display: flex;
+      gap: 12px;
+      align-items: stretch;
+      flex-wrap: wrap;
+      flex: 1;
+      min-width: 0; // Fixes flexbox overflow issues
+    
+      mat-form-field {
+        margin-bottom: 0; // Remove default bottom margin
+      }
+    
+      .search-field {
+        min-width: 250px;
+        flex: 2;
+      
+        mat-icon[matSuffix] {
+          // Ensure both icons align properly
+          margin-right: -8px;
+          margin-left: 8px;
+        }
+      
+        button[mat-icon-button] {
+          // Position the close button properly
+          margin-right: -8px;
+          width: 24px;
+          height: 24px;
+          line-height: 24px;
+        }
+      }
+    
+      .filter-field {
+        min-width: 160px;
+        flex: 1;
+      }
+    
+      .reset-button {
+        // Align properly with other controls
+        height: 56px; // Match form field height
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+      }
+    }
+  
+    button[mat-raised-button] {
+      // Align "Add Candidate" with search controls
+      height: 56px;
+      box-sizing: border-box;
+      white-space: nowrap;
+    }
+  
+    @media (max-width: 960px) {
+      flex-direction: column;
+      align-items: stretch;
+    
+      .search-filters {
+        flex-direction: column;
+        gap: 12px;
+      
+        .search-field,
+        .filter-field {
+          width: 100%;
+          min-width: unset;
+        }
+      
+        .reset-button {
+          width: 100%;
+          height: 48px;
+          justify-content: center;
+        }
+      }
+    
+      button[mat-raised-button] {
+        width: 100%;
+        height: 48px;
+      }
+    }
+  }
+
+
+  .table-container {
+    overflow-x: auto;
+
+    table {
+      width: 100%;
+    }
+
+    .employee-name {
+      color: #3f51b5;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .no-data {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      color: rgba(0, 0, 0, 0.6);
+
+      mat-icon {
+        font-size: 48px;
+        width: 48px;
+        height: 48px;
+        margin-bottom: 16px;
+      }
+
+      p {
+        margin: 0;
+        font-size: 16px;
+      }
+    }
+  }
+
+  mat-paginator {
+    margin-top: 16px;
+    background: transparent;
+  }
+
+}

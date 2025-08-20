@@ -1,0 +1,111 @@
+<!-- candidate-form.component.html -->
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        {{isEditMode ? 'Edit' : 'Add New'}} Candidate
+      </mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <!-- Basic Information Section -->
+      <h3 class="form-section-title">Basic Information</h3>
+      <div class="form-row">
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Full Name</mat-label>
+          <input matInput formControlName="name" required>
+          <mat-error *ngIf="form.get('name')?.hasError('required')">
+            Name is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" required>
+          <mat-error *ngIf="form.get('email')?.hasError('required')">
+            Email is required
+          </mat-error>
+          <mat-error *ngIf="form.get('email')?.hasError('email')">
+            Please enter a valid email
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Phone Number</mat-label>
+          <input matInput formControlName="phone" required>
+          <mat-error *ngIf="form.get('phone')?.hasError('required')">
+            Phone is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Application Date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="applicationDate" [max]="maxDate" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="form.get('applicationDate')?.hasError('required')">
+            Application date is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Application Details Section -->
+      <h3 class="form-section-title">Application Details</h3>
+      <div class="form-row">
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Applied Position</mat-label>
+          <input matInput formControlName="appliedPosition" required>
+          <mat-error *ngIf="form.get('appliedPosition')?.hasError('required')">
+            Position is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Department</mat-label>
+          <mat-select formControlName="appliedDepartmentId" required>
+            <mat-option *ngFor="let dept of departments" [value]="dept.id">
+              {{dept.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('appliedDepartmentId')?.hasError('required')">
+            Department is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="fill" class="form-field-wide">
+          <mat-label>Resume URL</mat-label>
+          <input matInput formControlName="resume">
+          <mat-hint>Link to candidate's resume or portfolio</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row" *ngIf="isEditMode">
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status">
+            <mat-option value="Applied">Applied</mat-option>
+            <mat-option value="Interviewed">Interviewed</mat-option>
+            <mat-option value="Hired">Hired</mat-option>
+            <mat-option value="Rejected">Rejected</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-button type="button" (click)="router.navigate(['/candidates'])">
+        Cancel
+      </button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || isLoading">
+        {{isLoading ? 'Saving...' : 'Save'}}
+        <mat-icon *ngIf="isLoading">
+          <mat-spinner diameter="20"></mat-spinner>
+        </mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>

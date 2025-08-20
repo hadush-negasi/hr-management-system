@@ -1,0 +1,35 @@
+// candidate-form.component.scss
+.form-section-title {
+  margin: 20px 0 10px;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 500;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.form-field {
+  flex: 1;
+}
+
+.form-field-wide {
+  flex: 2;
+}
+
+mat-card {
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+mat-spinner {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+.error-snackbar {
+  background-color: #f44336;
+  color: white;
+}

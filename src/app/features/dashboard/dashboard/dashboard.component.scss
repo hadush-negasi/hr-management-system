@@ -1,0 +1,266 @@
+// src/app/features/dashboard/dashboard.component.scss
+.dashboard-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  h1 {
+    margin: 0;
+    color: #3f51b5;
+    font-weight: 500;
+  }
+}
+
+.loading-overlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px;
+  text-align: center;
+
+  p {
+    margin-top: 16px;
+    color: #666;
+  }
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.metric-card {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  mat-card-content {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .metric-icon {
+    background: #3f51b5;
+    color: white;
+    border-radius: 50%;
+    padding: 12px;
+    margin-right: 16px;
+
+    mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .metric-content {
+    h2 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 600;
+      color: #3f51b5;
+    }
+
+    p {
+      margin: 4px 0 0 0;
+      color: #666;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.grid-column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.dashboard-card {
+  mat-card-header {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 16px;
+  }
+
+  mat-card-content {
+    padding: 16px;
+  }
+}
+
+.department-stats {
+  .department-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f5f5f5;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .dept-info {
+      h4 {
+        margin: 0 0 4px 0;
+        font-weight: 500;
+      }
+
+      span {
+        color: #666;
+        font-size: 0.9rem;
+      }
+    }
+
+    .dept-budget {
+      font-weight: 600;
+      color: #4caf50;
+    }
+  }
+}
+
+.recent-list, .anniversary-list {
+  .recent-item, .anniversary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f5f5f5;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .employee-info {
+      h4 {
+        margin: 0 0 4px 0;
+        font-weight: 500;
+      }
+
+      span {
+        color: #666;
+        font-size: 0.9rem;
+      }
+    }
+
+    .hire-date, .anniversary-date {
+      text-align: right;
+      font-size: 0.9rem;
+
+      .days {
+        display: block;
+        font-weight: 600;
+        color: #ff9800;
+      }
+    }
+  }
+}
+
+.quick-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+
+  .action-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+
+    mat-icon {
+      margin-right: 4px;
+    }
+  }
+}
+
+.candidate-stats {
+  .status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f5f5f5;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .status-label {
+      text-transform: capitalize;
+      font-weight: 500;
+    }
+
+    .status-count {
+      background: #3f51b5;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #999;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+  }
+
+  p {
+    margin: 0;
+    font-style: italic;
+  }
+}
+
+// Responsive design
+@media (max-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 16px;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+}

@@ -1,0 +1,111 @@
+<div class="salary-detail-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        Salary Details
+        <mat-icon *ngIf="isLoading" class="loading-icon">
+          <mat-spinner diameter="24"></mat-spinner>
+        </mat-icon>
+      </mat-card-title>
+      <mat-card-subtitle *ngIf="employee">
+        For: {{employee.name}} ({{employee.position}})
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content *ngIf="salary">
+      <div class="detail-section">
+        <h3 class="section-title">Current Salary</h3>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="detail-label">Base Amount:</span>
+            <span class="detail-value">{{formatCurrency(salary.baseAmount)}}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Bonus:</span>
+            <span class="detail-value">{{formatCurrency(salary.bonus || 0)}}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Gross Amount:</span>
+            <span class="detail-value">{{formatCurrency(salary.grossAmount)}}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Tax Deductions:</span>
+            <span class="detail-value">{{formatCurrency(salary.taxDeductions)}}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Net Amount:</span>
+            <span class="detail-value">{{formatCurrency(salary.netAmount)}}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Payment Frequency:</span>
+            <span class="detail-value">{{salary.paymentFrequency}}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Effective Date:</span>
+            <span class="detail-value">{{formatDate(salary.effectiveDate)}}</span>
+          </div>
+          <div class="detail-item" *ngIf="salary.adjustmentType">
+            <span class="detail-label">Adjustment Type:</span>
+            <span class="detail-value">{{salary.adjustmentType | titlecase}}</span>
+          </div>
+          <div class="detail-item" *ngIf="salary.notes">
+            <span class="detail-label">Notes:</span>
+            <span class="detail-value">{{salary.notes}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-section" *ngIf="salaryHistory.length > 0">
+        <h3 class="section-title">Salary History</h3>
+        <table mat-table [dataSource]="salaryHistory" class="history-table">
+          <!-- Effective Date Column -->
+          <ng-container matColumnDef="effectiveDate">
+            <th mat-header-cell *matHeaderCellDef>Effective Date</th>
+            <td mat-cell *matCellDef="let item">{{formatDate(item.effectiveDate)}}</td>
+          </ng-container>
+
+          <!-- Base Amount Column -->
+          <ng-container matColumnDef="baseAmount">
+            <th mat-header-cell *matHeaderCellDef>Base Amount</th>
+            <td mat-cell *matCellDef="let item">{{formatCurrency(item.baseAmount)}}</td>
+          </ng-container>
+
+          <!-- Bonus Column -->
+          <ng-container matColumnDef="bonus">
+            <th mat-header-cell *matHeaderCellDef>Bonus</th>
+            <td mat-cell *matCellDef="let item">{{formatCurrency(item.bonus || 0)}}</td>
+          </ng-container>
+
+          <!-- Net Amount Column -->
+          <ng-container matColumnDef="netAmount">
+            <th mat-header-cell *matHeaderCellDef>Net Amount</th>
+            <td mat-cell *matCellDef="let item">{{formatCurrency(item.netAmount)}}</td>
+          </ng-container>
+
+          <!-- Adjustment Type Column -->
+          <ng-container matColumnDef="adjustmentType">
+            <th mat-header-cell *matHeaderCellDef>Adjustment</th>
+            <td mat-cell *matCellDef="let item">
+              {{item.adjustmentType ? (item.adjustmentType | titlecase) : '-'}}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['effectiveDate', 'baseAmount', 'bonus', 'netAmount', 'adjustmentType']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['effectiveDate', 'baseAmount', 'bonus', 'netAmount', 'adjustmentType'];"></tr>
+        </table>
+      </div>
+
+      <div class="detail-section" *ngIf="salaryHistory.length === 0">
+        <p>No previous salary records found</p>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-button (click)="router.navigate(['/salaries'])">Back to List</button>
+      <button mat-raised-button color="primary" 
+              [routerLink]="['/salaries','edit', salary?salary.id:'']">
+        Edit Salary
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

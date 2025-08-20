@@ -1,0 +1,190 @@
+@import '~@angular/material/theming';
+
+.employee-detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.loading-card {
+  margin: 24px 0;
+  
+  .loading-text {
+    padding: 16px;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 24px;
+  
+  .avatar-container {
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 28px;
+      font-weight: 500;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+  }
+  
+  .header-content {
+    flex: 1;
+    min-width: 250px;
+    
+    .employee-name {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 500;
+    }
+    
+    .status-container {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+      
+      .status-chip {
+        font-weight: 500;
+        
+        .status-icon {
+          margin-right: 4px;
+        }
+      }
+      
+      .hire-date {
+        color: rgba(0, 0, 0, 0.6);
+        font-size: 14px;
+      }
+    }
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    
+    @media (max-width: 600px) {
+      width: 100%;
+      justify-content: flex-end;
+    }
+  }
+}
+
+.profile-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.info-card {
+  margin-bottom: 24px;
+  
+  mat-card-header {
+    margin-bottom: 16px;
+    
+    mat-card-title {
+      font-size: 18px;
+      font-weight: 500;
+    }
+    
+    mat-card-subtitle {
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+  
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    mat-icon {
+      color: mat-color($mat-indigo, 500);
+      flex-shrink: 0;
+    }
+    
+    .info-label {
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.6);
+      margin-bottom: 2px;
+    }
+    
+    .info-value {
+      font-size: 16px;
+      line-height: 1.4;
+    }
+  }
+}
+
+.action-card {
+  .delete-button {
+    width: 100%;
+  }
+}
+
+.back-button {
+  margin-top: 24px;
+}
+
+// Status colors
+.status-Active {
+  background-color: mat-color($mat-green, 500) !important;
+  color: white !important;
+}
+
+.status-On-Leave {
+  background-color: mat-color($mat-blue, 500) !important;
+  color: white !important;
+}
+
+.status-Terminated {
+  background-color: mat-color($mat-red, 500) !important;
+  color: white !important;
+}
+
+// Responsive adjustments
+@media (max-width: 600px) {
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+    
+    .header-content {
+      text-align: center;
+    }
+    
+    .action-buttons {
+      justify-content: center;
+    }
+  }
+  
+  .info-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px !important;
+    
+    mat-icon {
+      margin-bottom: 4px;
+    }
+  }
+}

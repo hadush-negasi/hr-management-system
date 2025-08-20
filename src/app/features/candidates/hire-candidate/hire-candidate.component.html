@@ -1,0 +1,140 @@
+<mat-card *ngIf="isLoading">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  <div class="loading-text">Loading candidate details...</div>
+</mat-card>
+
+<mat-card *ngIf="candidate && !isLoading">
+  <mat-card-header>
+    <div mat-card-avatar class="candidate-avatar">
+      <mat-icon>person</mat-icon>
+    </div>
+    <mat-card-title>Hire {{candidate.name}}</mat-card-title>
+    <mat-card-subtitle>
+      {{candidate.email}} • {{candidate.phone}}
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-divider></mat-divider>
+
+  <mat-card-content>
+    <!-- Candidate Information Summary -->
+    <div class="info-section">
+      <h3 class="section-title">Candidate Information</h3>
+      <div class="info-grid">
+        <div class="info-item">
+          <strong>Applied Position:</strong>
+          <span>{{candidate.appliedPosition}}</span>
+        </div>
+        <div class="info-item">
+          <strong>Department:</strong>
+          <span>{{department && department.name? department.name: 'Not specified'}}</span>
+        </div>
+        <div class="info-item">
+          <strong>Status:</strong>
+          <mat-chip color="primary" selected>{{candidate.status}}</mat-chip>
+        </div>
+        <div class="info-item">
+          <strong>Application Date:</strong>
+          <span>{{candidate.applicationDate | date}}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Employee Details Form -->
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      
+      <!-- Personal Information Section -->
+      <div class="form-section">
+        <h3 class="section-title">Personal Information</h3>
+        
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput [matDatepicker]="dobPicker" formControlName="dateOfBirth">
+            <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+            <mat-datepicker #dobPicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="form-field-full">
+            <mat-label>Address</mat-label>
+            <textarea matInput formControlName="address" rows="3" placeholder="Full address"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Emergency Contact Section -->
+      <div class="form-section">
+        <h3 class="section-title">Emergency Contact</h3>
+        
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Emergency Contact Name</mat-label>
+            <input matInput formControlName="emergencyContact" placeholder="Full name">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Emergency Contact Phone</mat-label>
+            <input matInput formControlName="emergencyContactPhone" type="tel" placeholder="Phone number">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Salary Information Section -->
+      <div class="form-section">
+        <h3 class="section-title">Salary Information</h3>
+        
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Base Salary *</mat-label>
+            <input matInput type="number" formControlName="baseAmount" required min="0" step="0.01">
+            <span matPrefix>$&nbsp;</span>
+            <mat-error *ngIf="form.get('baseAmount')&& form.get('baseAmount').hasError('required')">
+              Base salary is required
+            </mat-error>
+            <mat-error *ngIf="form.get('baseAmount') && form.get('baseAmount').hasError('min')">
+              Must be a positive value
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Payment Frequency *</mat-label>
+            <mat-select formControlName="paymentFrequency" required>
+              <mat-option *ngFor="let freq of paymentFrequencies" [value]="freq">
+                {{freq}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Effective Date *</mat-label>
+            <input matInput [matDatepicker]="effectiveDatePicker" formControlName="effectiveDate" required>
+            <mat-datepicker-toggle matSuffix [for]="effectiveDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #effectiveDatePicker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Notes</mat-label>
+            <textarea matInput formControlName="notes" rows="2" placeholder="Optional salary notes"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <mat-card-actions align="end">
+        <button mat-button type="button" (click)="router.navigate(['/candidadets/view', candidate.id])" [disabled]="isHiring">
+          Cancel
+        </button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || isHiring" class="hire-button">
+          <mat-icon>work</mat-icon>
+          <span>{{isHiring ? 'Hiring...' : 'Confirm Hire'}}</span>
+          <mat-icon *ngIf="isHiring" class="spinner-icon">
+            <mat-spinner diameter="20"></mat-spinner>
+          </mat-icon>
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card-content>
+</mat-card>

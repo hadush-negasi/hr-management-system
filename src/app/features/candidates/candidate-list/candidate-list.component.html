@@ -1,0 +1,130 @@
+<div class="candidate-list-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Candidates</mat-card-title>
+      <mat-card-subtitle *ngIf="isLoading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="toolbar">
+        <div class="search-filters">
+          <mat-form-field appearance="outline" class="search-field">
+            <mat-label>Search Candidates</mat-label>
+            <input matInput [formControl]="searchControl" placeholder="Name, position or email">
+            <button mat-icon-button matSuffix *ngIf="searchControl.value" (click)="searchControl.setValue('')">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-icon matSuffix *ngIf="!searchControl.value">search</mat-icon>
+          </mat-form-field>
+        
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Department</mat-label>
+            <mat-select [formControl]="departmentFilter">
+              <mat-option value="">All Departments</mat-option>
+              <mat-option *ngFor="let dept of departments" [value]="dept.id">
+                {{dept.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Status</mat-label>
+            <mat-select [formControl]="statusFilter">
+              <mat-option value="">All Statuses</mat-option>
+              <mat-option *ngFor="let status of statuses" [value]="status">
+                {{status}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        
+          <button mat-stroaked-button (click)="resetFilters()" class="reset-button">
+            <mat-icon>refresh</mat-icon> Reset
+          </button>
+          <button mat-raised-button color="primary" (click)="router.navigate(['/candidates/new'])">
+            <mat-icon>person_add</mat-icon> Add Candidate
+          </button>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table mat-table [dataSource]="dataSource" matSort>
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+            <td mat-cell *matCellDef="let candidate">
+              <a (click)="viewCandidate(candidate.id)" class="candidate-name">{{candidate.name}}</a>
+            </td>
+          </ng-container>
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="appliedPosition">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Position</th>
+            <td mat-cell *matCellDef="let candidate">{{candidate.appliedPosition}}</td>
+          </ng-container>
+
+          <!-- Department Column -->
+          <ng-container matColumnDef="appliedDepartment">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Department</th>
+            <td mat-cell *matCellDef="let candidate">
+              {{getDepartmentName(candidate.appliedDepartmentId)}}
+            </td>
+          </ng-container>
+
+          <!-- Status Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+            <td mat-cell *matCellDef="let candidate">
+              <mat-chip [color]="getStatusColor(candidate.status || 'Applied')" selected>
+                {{candidate.status || 'Applied'}}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <!-- Date Column -->
+          <ng-container matColumnDef="applicationDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Applied On</th>
+            <td mat-cell *matCellDef="let candidate">
+              {{candidate.applicationDate | date:'mediumDate'}}
+            </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let candidate">
+              <button mat-icon-button color="primary" [routerLink]="['view', candidate.id]">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button (click)="editCandidate(candidate.id)" matTooltip="Edit">
+                <mat-icon>edit</mat-icon>
+              </button>
+              
+              <button mat-icon-button color="primary" 
+                      *ngIf="candidate.status === 'Interviewed'"
+                      (click)="hireCandidate(candidate)" matTooltip="Hire">
+                <mat-icon>work</mat-icon>
+              </button>
+              
+              <button mat-icon-button color="warn" 
+                      (click)="deleteCandidate(candidate.id)" matTooltip="Delete">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+        <div *ngIf="dataSource.data.length === 0 && !isLoading" class="no-data">
+          <mat-icon>info</mat-icon>
+          <p>No candidates found</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,184 @@
+// src/app/app.component.scss
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.sticky-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  
+  // Prevent toolbar from shrinking on mobile
+  flex-shrink: 0;
+}
+
+.app-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-right: 24px;
+  user-select: none;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px; // Reduced gap for better spacing
+  
+  a.mat-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: auto;
+    padding: 0 16px;
+    height: 64px; // Match toolbar height
+    border-radius: 0;
+    position: relative;
+    transition: all 0.3s ease;
+    
+    // Hover effect
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      
+      &::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 16px;
+        right: 16px;
+        height: 2px;
+        background-color: rgba(255, 255, 255, 0.5);
+      }
+    }
+    
+    // Active state styling
+    &.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      
+      &::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 16px;
+        right: 16px;
+        height: 3px;
+        background-color: white;
+      }
+      
+      mat-icon {
+        color: #ffd54f; // Gold color for active icons
+      }
+    }
+    
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      margin: 0;
+    }
+  }
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.main-content {
+  flex: 1;
+  padding: 0;
+}
+
+// Mobile responsive design
+@media (max-width: 768px) {
+  .sticky-toolbar {
+    padding: 0 8px;
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 64px;
+  }
+  
+  .app-title {
+    font-size: 1.1rem;
+    margin-right: 16px;
+  }
+  
+  .nav-links {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    padding: 0 8px;
+    background-color: rgba(0, 0, 0, 0.1);
+    
+    // Hide scrollbar but keep functionality
+    scrollbar-width: none; /* Firefox */
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Edge */
+    }
+    
+    a.mat-button {
+      height: 48px;
+      padding: 0 12px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+      
+      span {
+        font-size: 0.9rem;
+      }
+    }
+  }
+  
+  .spacer {
+    display: none;
+  }
+}
+
+// Tablet responsive design
+@media (max-width: 1024px) and (min-width: 769px) {
+  .nav-links {
+    a.mat-button {
+      padding: 0 12px;
+      
+      span {
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+// Optional: Add smooth scrolling for the entire app
+html {
+  scroll-behavior: smooth;
+}
+
+// Optional: Add focus styles for accessibility
+a.mat-button:focus {
+  outline: 2px solid #ffd54f;
+  outline-offset: -2px;
+}
+
+// Optional: Animation for active state
+@keyframes activePulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.nav-links a.mat-button.active {
+  animation: activePulse 0.3s ease;
+}

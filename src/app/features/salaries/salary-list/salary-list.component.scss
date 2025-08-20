@@ -1,0 +1,148 @@
+.salary-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+
+  mat-card {
+    overflow: hidden;
+    padding: 16px;
+  }
+
+  .toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+
+    .main-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: stretch;
+
+      .search-field {
+        flex: 1;
+        min-width: 200px;
+      }
+
+      .filter-field {
+        min-width: 160px;
+        flex: 1;
+      }
+
+      .action-buttons {
+        height: 56px;
+        display: flex;
+        gap: 8px;
+        margin-left: auto;
+        flex-shrink: 0;
+      }
+
+      .reset-button {
+        // Align properly with other controls
+        height: 50px; // Match form field height
+        box-sizing: border-box;
+        display: flex;
+        align-items: stretch;
+      }
+    }
+
+    .advanced-filters {
+      display: none;
+      padding: 8px 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.12);
+
+      &.expanded {
+        display: block;
+      }
+
+      .salary-range-filters {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .salary-filter-field {
+          flex: 1;
+        }
+
+        .range-separator {
+          color: rgba(0, 0, 0, 0.54);
+          font-size: 14px;
+        }
+      }
+    }
+
+    .toggle-filters {
+      align-self: flex-start;
+      margin-top: -8px;
+      color: #3f51b5; /* Primary color */
+    }
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 960px) {
+    .toolbar .main-filters {
+      .filter-field {
+        min-width: calc(50% - 18px); /* 2 filters per row */
+      }
+    }
+  }
+
+  @media (max-width: 600px) {
+    .toolbar .main-filters {
+      .search-field,
+      .filter-field {
+        min-width: 100%; /* Full width on small screens */
+      }
+
+      .action-buttons {
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+  }
+
+  .table-container {
+    overflow-x: auto;
+
+    table {
+      width: 100%;
+    }
+
+    .candidate-name {
+      color: #3f51b5;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .no-data {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      color: rgba(0, 0, 0, 0.6);
+
+      mat-icon {
+        font-size: 48px;
+        width: 48px;
+        height: 48px;
+        margin-bottom: 16px;
+      }
+
+      p {
+        margin: 0;
+        font-size: 16px;
+      }
+    }
+  }
+
+  mat-paginator {
+    margin-top: 16px;
+    background: transparent;
+  }
+
+}

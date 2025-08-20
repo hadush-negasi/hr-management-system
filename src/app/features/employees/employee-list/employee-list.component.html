@@ -1,0 +1,128 @@
+<div class="employee-list-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Employees</mat-card-title>
+      <mat-card-subtitle *ngIf="isLoading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="toolbar">
+        <div class="search-filters">
+          <mat-form-field appearance="outline" class="search-field">
+            <mat-label>Search Employees</mat-label>
+            <input matInput [formControl]="searchControl" placeholder="Name, email or position">
+            <button mat-icon-button matSuffix *ngIf="searchControl.value" (click)="searchControl.setValue('')">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-icon matSuffix *ngIf="!searchControl.value">search</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Department</mat-label>
+            <mat-select [formControl]="departmentFilter">
+              <mat-option value="">All Departments</mat-option>
+              <mat-option *ngFor="let dept of departmentOptions" [value]="dept.id">
+                {{dept.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Position</mat-label>
+            <mat-select [formControl]="positionFilter">
+              <mat-option value="">All Positions</mat-option>
+              <mat-option *ngFor="let position of positionOptions" [value]="position">
+                {{position}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <button mat-stroked-button (click)="resetFilters()" class="reset-button">
+            <mat-icon>refresh</mat-icon> Reset
+          </button>
+          <button mat-raised-button color="primary" (click)="router.navigate(['/employees/new'])">
+            <mat-icon>person_add</mat-icon> Add Employee
+          </button>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table mat-table [dataSource]="dataSource" matSort>
+          <!-- ID Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+            <td mat-cell *matCellDef="let employee">{{employee.id}}</td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+            <td mat-cell *matCellDef="let employee">
+              <a [routerLink]="['view', employee.id]" class="employee-name">{{employee.name}}</a>
+            </td>
+          </ng-container>
+
+          <!-- Email Column -->
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+            <td mat-cell *matCellDef="let employee">
+              <a href="mailto:{{employee.email}}">{{employee.email}}</a>
+            </td>
+          </ng-container>
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Position</th>
+            <td mat-cell *matCellDef="let employee">
+              {{employee.position || '-'}}
+            </td>
+          </ng-container>
+
+          <!-- Department Column -->
+          <ng-container matColumnDef="department">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Department</th>
+            <td mat-cell *matCellDef="let employee">
+              {{getDepartmentName(employee.departmentId)}}
+            </td>
+          </ng-container>
+
+          <!-- Hire Date Column -->
+          <ng-container matColumnDef="hireDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Hire Date</th>
+            <td mat-cell *matCellDef="let employee">
+              {{formatDate(employee.hireDate)}}
+            </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let employee">
+              <button mat-icon-button color="primary" [routerLink]="['view', employee.id]">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button [routerLink]="['edit', employee.id]" matTooltip="Edit">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteEmployee(employee.id)" matTooltip="Delete">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+
+        <div *ngIf="dataSource.data.length === 0 && !isLoading" class="no-data">
+          <mat-icon>info</mat-icon>
+          <p>No employees found</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

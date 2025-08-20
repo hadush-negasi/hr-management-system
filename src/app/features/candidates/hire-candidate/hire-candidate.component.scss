@@ -1,0 +1,143 @@
+// hire-candidate.component.scss
+.info-section {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  
+  strong {
+    color: #666;
+    font-size: 0.9em;
+  }
+  
+  span {
+    font-weight: 500;
+  }
+}
+
+.form-section {
+  margin-bottom: 24px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.section-title {
+  color: #3f51b5;
+  font-weight: 600;
+  margin-bottom: 20px;
+  font-size: 1.1em;
+  display: flex;
+  align-items: center;
+  
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 20px;
+    background: #3f51b5;
+    margin-right: 12px;
+    border-radius: 2px;
+  }
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-field {
+  flex: 1;
+}
+
+.form-field-full {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.loading-text {
+  padding: 24px;
+  text-align: center;
+  color: #666;
+}
+
+.candidate-avatar {
+  background: #3f51b5;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  mat-icon {
+    color: white;
+  }
+}
+
+.error-snackbar {
+  background-color: #f44336;
+  color: white;
+}
+
+.success-snackbar {
+  background-color: #4caf50;
+  color: white;
+}
+
+.hire-button {
+  min-width: 140px;
+  
+  mat-icon:not(.spinner-icon) {
+    margin-right: 8px;
+  }
+}
+
+.spinner-icon {
+  margin-left: 8px;
+}
+
+mat-divider {
+  margin: 16px 0;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .form-field {
+    margin-bottom: 16px;
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-section {
+    padding: 16px;
+  }
+}
+
+// Enhanced form styling
+mat-form-field {
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+}

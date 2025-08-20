@@ -1,0 +1,234 @@
+<div class="employee-detail-container">
+  <mat-card *ngIf="isLoading" class="loading-card">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    <div class="loading-text">Loading employee details...</div>
+  </mat-card>
+
+  <div *ngIf="employee && !isLoading" class="employee-profile">
+    <!-- Header Section -->
+    <div class="profile-header">
+      <div class="avatar-container">
+        <div class="avatar" [style.background]="avatarColor">
+          {{employee.name | initials}}
+        </div>
+      </div>
+      
+      <div class="header-content">
+        <h1 class="employee-name">{{employee.name}}</h1>
+        <div class="status-container">
+          <mat-chip [color]="getStatusColor(employee.status)" selected class="status-chip">
+            <mat-icon class="status-icon">
+              {{getStatusIcon(employee.status)}}
+            </mat-icon>
+            {{employee.status || 'Active'}}
+          </mat-chip>
+          <span class="hire-date">
+            Hired on {{employee.hireDate | date:'mediumDate'}} • 
+            Tenure: {{calculateTenure(employee.hireDate)}}
+          </span>
+        </div>
+      </div>
+      
+      <div class="action-buttons">
+        <button mat-stroked-button (click)="onEdit()" class="action-button">
+          <mat-icon>edit</mat-icon> Edit
+        </button>
+        <button mat-raised-button color="primary" (click)="onViewSalary()" class="action-button">
+          <mat-icon>attach_money</mat-icon> Salary
+        </button>
+        <button mat-stroked-button color="warn" 
+                *ngIf="employee.status !== 'Terminated'"
+                (click)="onTerminate()" class="action-button">
+          <mat-icon>block</mat-icon> Terminate
+        </button>
+        <button mat-stroked-button color="primary" 
+                *ngIf="employee.status === 'Terminated'"
+                (click)="onReactivate()" class="action-button">
+          <mat-icon>refresh</mat-icon> Reactivate
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="profile-content">
+      <!-- Left Column -->
+      <div class="left-column">
+        <!-- Personal Information Card -->
+        <mat-card class="info-card">
+          <mat-card-header>
+            <mat-card-title>Personal Information</mat-card-title>
+            <mat-card-subtitle>Contact details</mat-card-subtitle>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <div class="info-item">
+              <mat-icon>email</mat-icon>
+              <div>
+                <div class="info-label">Email</div>
+                <div class="info-value">{{employee.email}}</div>
+              </div>
+            </div>
+            
+            <div class="info-item">
+              <mat-icon>phone</mat-icon>
+              <div>
+                <div class="info-label">Phone</div>
+                <div class="info-value">{{employee.phoneNumber || 'Not provided'}}</div>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <mat-icon>location_on</mat-icon>
+              <div>
+                <div class="info-label">Address</div>
+                <div class="info-value">{{employee.address || 'Not provided'}}</div>
+              </div>
+            </div>
+
+            <div class="info-item" *ngIf="employee.dateOfBirth">
+              <mat-icon>cake</mat-icon>
+              <div>
+                <div class="info-label">Date of Birth</div>
+                <div class="info-value">{{employee.dateOfBirth | date:'mediumDate'}}</div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Emergency Contact Card -->
+        <mat-card class="info-card" *ngIf="employee.emergencyContact">
+          <mat-card-header>
+            <mat-card-title>Emergency Contact</mat-card-title>
+            <mat-card-subtitle>Emergency information</mat-card-subtitle>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <div class="info-item">
+              <mat-icon>contact_emergency</mat-icon>
+              <div>
+                <div class="info-label">Contact Name</div>
+                <div class="info-value">{{employee.emergencyContact}}</div>
+              </div>
+            </div>
+            
+            <div class="info-item" *ngIf="employee.emergencyContactPhone">
+              <mat-icon>phone</mat-icon>
+              <div>
+                <div class="info-label">Contact Phone</div>
+                <div class="info-value">{{employee.emergencyContactPhone}}</div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-column">
+        <!-- Employment Information Card -->
+        <mat-card class="info-card">
+          <mat-card-header>
+            <mat-card-title>Employment Information</mat-card-title>
+            <mat-card-subtitle>Job details</mat-card-subtitle>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <div class="info-item">
+              <mat-icon>work_outline</mat-icon>
+              <div>
+                <div class="info-label">Position</div>
+                <div class="info-value">{{employee.position || 'Not specified'}}</div>
+              </div>
+            </div>
+            
+            <div class="info-item">
+              <mat-icon>business</mat-icon>
+              <div>
+                <div class="info-label">Department</div>
+                <div class="info-value">{{department?.name || 'Not specified'}}</div>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <mat-icon>{{getEmploymentTypeIcon(employee.employmentType)}}</mat-icon>
+              <div>
+                <div class="info-label">Employment Type</div>
+                <div class="info-value">{{employee.employmentType || 'Full-Time'}}</div>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <mat-icon>event</mat-icon>
+              <div>
+                <div class="info-label">Hire Date</div>
+                <div class="info-value">{{employee.hireDate | date:'mediumDate'}}</div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Salary Information Card -->
+        <mat-card class="info-card">
+          <mat-card-header>
+            <mat-card-title>Salary Information</mat-card-title>
+            <mat-card-subtitle>Compensation details</mat-card-subtitle>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <div class="info-item" *ngIf="salary">
+              <mat-icon>payments</mat-icon>
+              <div>
+                <div class="info-label">Base Salary</div>
+                <div class="info-value">{{formatSalary(salary.baseAmount)}}</div>
+              </div>
+            </div>
+            
+            <div class="info-item" *ngIf="salary?.bonus">
+              <mat-icon>celebration</mat-icon>
+              <div>
+                <div class="info-label">Bonus</div>
+                <div class="info-value">{{formatSalary(salary.bonus)}}</div>
+              </div>
+            </div>
+
+            <div class="info-item" *ngIf="salary">
+              <mat-icon>account_balance_wallet</mat-icon>
+              <div>
+                <div class="info-label">Payment Frequency</div>
+                <div class="info-value">{{salary.paymentFrequency}}</div>
+              </div>
+            </div>
+
+            <div class="info-item" *ngIf="salary">
+              <mat-icon>update</mat-icon>
+              <div>
+                <div class="info-label">Effective Date</div>
+                <div class="info-value">{{salary.effectiveDate | date:'mediumDate'}}</div>
+              </div>
+            </div>
+
+            <div class="info-item" *ngIf="!salary">
+              <mat-icon>warning</mat-icon>
+              <div>
+                <div class="info-label">No Salary Record</div>
+                <div class="info-value">Click the Salary button to add compensation details</div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Action Card -->
+        <mat-card class="action-card">
+          <mat-card-content>
+            <button mat-stroked-button color="warn" (click)="onDelete()" class="delete-button">
+              <mat-icon>delete</mat-icon> Delete Employee
+            </button>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+
+  <a mat-button routerLink="/employees" class="back-button">
+    <mat-icon>arrow_back</mat-icon> Back to Employees
+  </a>
+</div>

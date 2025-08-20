@@ -1,0 +1,57 @@
+<!-- src/app/app.component.html -->
+<div class="app-container">
+  <!-- Sticky Navigation Bar -->
+  <mat-toolbar color="primary" class="sticky-toolbar">
+    <!-- Clickable Title -->
+    <span class="app-title" routerLink="/dashboard" style="cursor: pointer;">
+      HR Management System
+    </span>
+    
+    <!-- Navigation Links -->
+    <nav class="nav-links">
+      <a mat-button routerLink="/dashboard" routerLinkActive="active" 
+         [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon>home</mat-icon>
+        Home
+      </a>
+      <a mat-button routerLink="/employees" routerLinkActive="active">
+        <mat-icon>people</mat-icon>
+        Employees
+      </a>
+      <a mat-button routerLink="/departments" routerLinkActive="active">
+        <mat-icon>business</mat-icon>
+        Departments
+      </a>
+      <a mat-button routerLink="/candidates" routerLinkActive="active">
+        <mat-icon>work</mat-icon>
+        Candidates
+      </a>
+      <a mat-button routerLink="/salaries" routerLinkActive="active">
+        <mat-icon>attach_money</mat-icon>
+        Salaries
+      </a>
+    </nav>
+
+    <!-- Optional: User menu or additional controls -->
+    <div class="spacer"></div>
+    <button mat-icon-button [matMenuTriggerFor]="userMenu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>settings</mat-icon>
+        <span>Settings</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

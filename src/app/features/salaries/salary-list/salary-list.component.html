@@ -1,0 +1,165 @@
+<div class="salary-list-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Salary Records</mat-card-title>
+      <mat-card-subtitle *ngIf="isLoading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="toolbar">
+        <!-- First Row: Main Filters -->
+        <div class="main-filters">
+          <!-- Search -->
+          <mat-form-field appearance="outline" class="search-field">
+            <mat-label>Search</mat-label>
+            <input matInput [formControl]="searchControl" placeholder="Employee, position...">
+            <button mat-icon-button matSuffix *ngIf="searchControl.value" (click)="searchControl.setValue('')">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-icon matSuffix *ngIf="!searchControl.value">search</mat-icon>
+          </mat-form-field>
+        
+          <!-- Department Filter -->
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Department</mat-label>
+            <mat-select [formControl]="departmentFilter">
+              <mat-option value="">All</mat-option>
+              <mat-option *ngFor="let dept of departmentOptions" [value]="dept.id">
+                {{dept.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        
+          <!-- Position Filter -->
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Position</mat-label>
+            <mat-select [formControl]="positionFilter">
+              <mat-option value="">All</mat-option>
+              <mat-option *ngFor="let position of positionOptions" [value]="position">
+                {{position}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        
+          <!-- Action Buttons -->
+          <div class="action-buttons">
+            <button mat-stroked-button (click)="resetFilters()">
+              <mat-icon>refresh</mat-icon> Reset
+            </button>
+            <!--<button mat-raised-button color="primary" routerLink="/salaries/new">
+              <mat-icon>add</mat-icon> Add Salary
+            </button>
+          -->
+          </div>
+        </div>
+      
+        <!-- Second Row: Advanced Filters (Salary Range) -->
+        <div class="advanced-filters" [class.expanded]="showAdvancedFilters">
+          <div class="salary-range-filters">
+            <mat-form-field appearance="outline" class="salary-filter-field">
+              <mat-label>Min Salary</mat-label>
+              <input matInput type="number" [formControl]="minSalaryControl" placeholder="Minimum">
+              <span matPrefix>$&nbsp;</span>
+            </mat-form-field>
+          
+            <div class="range-separator">to</div>
+          
+            <mat-form-field appearance="outline" class="salary-filter-field">
+              <mat-label>Max Salary</mat-label>
+              <input matInput type="number" [formControl]="maxSalaryControl" placeholder="Maximum">
+              <span matPrefix>$&nbsp;</span>
+            </mat-form-field>
+          </div>
+        </div>
+      
+        <!-- Toggle for advanced filters -->
+        <button mat-button (click)="showAdvancedFilters = !showAdvancedFilters" class="toggle-filters">
+          <mat-icon>{{showAdvancedFilters ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</mat-icon>
+          {{showAdvancedFilters ? 'Hide Salary Filters' : 'Show Salary Range Filters'}}
+        </button>
+      </div>
+
+      <div class="table-container">
+        <table mat-table [dataSource]="dataSource" matSort>
+          <!-- Employee Column -->
+          <ng-container matColumnDef="employee">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Employee</th>
+            <td mat-cell *matCellDef="let salary">{{salary.employeeName}}</td>
+          </ng-container>
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Position</th>
+            <td mat-cell *matCellDef="let salary">{{salary.position}}</td>
+          </ng-container>
+
+          <!-- Department Column -->
+          <ng-container matColumnDef="department">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Department</th>
+            <td mat-cell *matCellDef="let salary">{{salary.departmentName}}</td>
+          </ng-container>
+
+          <!-- Base Amount Column -->
+          <ng-container matColumnDef="baseAmount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Base Salary</th>
+            <td mat-cell *matCellDef="let salary">{{formatCurrency(salary.baseAmount)}}</td>
+          </ng-container>
+
+          <!-- Bonus Column -->
+          <ng-container matColumnDef="bonus">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Bonus</th>
+            <td mat-cell *matCellDef="let salary">{{formatCurrency(salary.bonus || 0)}}</td>
+          </ng-container>
+
+          <!-- Tax Deductions Column -->
+          <ng-container matColumnDef="taxDeductions">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tax</th>
+            <td mat-cell *matCellDef="let salary">{{formatCurrency(salary.taxDeductions)}}</td>
+          </ng-container>
+
+          <!-- Net Amount Column -->
+          <ng-container matColumnDef="netAmount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Net</th>
+            <td mat-cell *matCellDef="let salary">{{formatCurrency(salary.netAmount)}}</td>
+          </ng-container>
+
+          <!-- Effective Date Column -->
+          <ng-container matColumnDef="effectiveDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Effective Date</th>
+            <td mat-cell *matCellDef="let salary">{{formatDate(salary.effectiveDate)}}</td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let salary">
+              <button mat-icon-button color="primary" [routerLink]="['view', salary.id]" matTooltip="View Details">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button [routerLink]="['edit', salary.id]" matTooltip="Edit">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <!-- Salary deletion will happen auttomatically when deleting the employee entry or save it for later as historical data
+              <button mat-icon-button color="warn" (click)="deleteSalary(salary)" matTooltip="Delete">
+                <mat-icon>delete</mat-icon>
+              </button>
+              -->
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+
+        <div *ngIf="dataSource.data.length === 0 && !isLoading" class="no-data">
+          <mat-icon>info</mat-icon>
+          <p>No salary records found</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

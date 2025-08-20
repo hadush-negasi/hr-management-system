@@ -1,0 +1,95 @@
+<div class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        {{ isEditMode ? 'Edit Department' : 'Create New Department' }}
+      </mat-card-title>
+      <mat-card-subtitle *ngIf="isLoading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <!-- Name Field -->
+        <mat-form-field appearance="outline">
+          <mat-label>Department Name</mat-label>
+          <input matInput formControlName="name" required>
+          <mat-icon matSuffix>business</mat-icon>
+          <mat-error *ngIf="name?.hasError('required')">
+            Department name is required
+          </mat-error>
+          <mat-error *ngIf="name?.hasError('maxlength')">
+            Name cannot exceed 100 characters
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Location Field -->
+        <mat-form-field appearance="outline">
+          <mat-label>Location</mat-label>
+          <input matInput formControlName="location" required>
+          <mat-icon matSuffix>location_on</mat-icon>
+          <mat-error *ngIf="location?.hasError('required')">
+            Location is required
+          </mat-error>
+          <mat-error *ngIf="location?.hasError('maxlength')">
+            Location cannot exceed 50 characters
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Budget Field -->
+        <mat-form-field appearance="outline">
+          <mat-label>Budget</mat-label>
+          <input matInput type="number" formControlName="budget" min="0">
+          <span matPrefix>$&nbsp;</span>
+          <mat-error *ngIf="budget?.hasError('min')">
+            Budget cannot be negative
+          </mat-error>
+          <mat-error *ngIf="budget?.hasError('max')">
+            Budget cannot exceed $10,000,000
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Manager Selection -->
+        <mat-form-field appearance="outline">
+          <mat-label>Department Manager</mat-label>
+          <mat-select formControlName="managerId">
+            <mat-option [value]="null">-- No Manager --</mat-option>
+            <mat-option *ngFor="let manager of managers" [value]="manager.id">
+              {{ manager.name }} ({{ manager.position }})
+            </mat-option>
+          </mat-select>
+          <mat-icon matSuffix>supervisor_account</mat-icon>
+        </mat-form-field>
+
+        <!-- Description Field -->
+        <mat-form-field appearance="outline">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description" rows="3"></textarea>
+          <mat-error *ngIf="description?.hasError('maxlength')">
+            Description cannot exceed 500 characters
+          </mat-error>
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button 
+            mat-raised-button 
+            color="primary" 
+            type="submit"
+            [disabled]="isLoading || form.invalid"
+          >
+            {{ isEditMode ? 'Update' : 'Create' }} Department
+          </button>
+          <button 
+            mat-stroked-button 
+            type="button" 
+            (click)="router.navigate(['/departments'])"
+            [disabled]="isLoading"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

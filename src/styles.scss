@@ -1,0 +1,54 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.container {
+  padding: 24px;
+}
+
+.add-button {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+// src/styles.scss (add these to the existing file)
+// Improved scrollbar styling
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+  
+  &:hover {
+    background: #a8a8a8;
+  }
+}
+
+// Better focus visibility for accessibility
+*:focus {
+  outline: 2px solid #3f51b5;
+  outline-offset: 2px;
+}
+
+// Smooth transitions for all interactive elements
+button, a {
+  transition: all 0.2s ease-in-out;
+}

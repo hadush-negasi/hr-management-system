@@ -1,0 +1,195 @@
+<!-- src/app/features/dashboard/dashboard.component.html -->
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>HR Dashboard</h1>
+    <button mat-raised-button color="primary" (click)="loadDashboardData()" [disabled]="isLoading">
+      <mat-icon>refresh</mat-icon>
+      Refresh
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-overlay">
+    <mat-spinner diameter="60"></mat-spinner>
+    <p>Loading dashboard data...</p>
+  </div>
+
+  <!-- Main Metrics Cards -->
+  <div class="metrics-grid" *ngIf="!isLoading">
+    <!-- Total Employees -->
+    <mat-card class="metric-card" (click)="navigateTo('/employees')">
+      <mat-card-content>
+        <div class="metric-icon">
+          <mat-icon>people</mat-icon>
+        </div>
+        <div class="metric-content">
+          <h2>{{metrics.totalEmployees}}</h2>
+          <p>Total Employees</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Total Departments -->
+    <mat-card class="metric-card" (click)="navigateTo('/departments')">
+      <mat-card-content>
+        <div class="metric-icon">
+          <mat-icon>business</mat-icon>
+        </div>
+        <div class="metric-content">
+          <h2>{{metrics.totalDepartments}}</h2>
+          <p>Departments</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Active Candidates -->
+    <mat-card class="metric-card" (click)="navigateTo('/candidates')">
+      <mat-card-content>
+        <div class="metric-icon">
+          <mat-icon>work</mat-icon>
+        </div>
+        <div class="metric-content">
+          <h2>{{metrics.activeCandidates}}</h2>
+          <p>Active Candidates</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Total Payroll -->
+    <mat-card class="metric-card">
+      <mat-card-content>
+        <div class="metric-icon">
+          <mat-icon>attach_money</mat-icon>
+        </div>
+        <div class="metric-content">
+          <h2>{{formatCurrency(metrics.totalPayroll)}}</h2>
+          <p>Monthly Payroll</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="dashboard-grid" *ngIf="!isLoading">
+    <!-- Left Column -->
+    <div class="grid-column">
+      <!-- Department Statistics -->
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>Department Overview</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="department-stats">
+            <div *ngFor="let dept of metrics.departmentStats" class="department-item">
+              <div class="dept-info">
+                <h4>{{dept.name}}</h4>
+                <span>{{dept.count}} employees</span>
+              </div>
+              <div class="dept-budget">
+                {{formatCurrency(dept.budget)}}
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Recent Hires -->
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>Recent Hires</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="recent-list">
+            <div *ngFor="let employee of metrics.recentHires" class="recent-item">
+              <div class="employee-info">
+                <h4>{{employee.name}}</h4>
+                <span>{{employee.position}}</span>
+              </div>
+              <div class="hire-date">
+                {{employee.hireDate | date:'MMM d'}}
+              </div>
+            </div>
+            <div *ngIf="metrics.recentHires.length === 0" class="empty-state">
+              <mat-icon>person_add</mat-icon>
+              <p>No recent hires</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Right Column -->
+    <div class="grid-column">
+      <!-- Quick Actions -->
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>Quick Actions</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="quick-actions">
+            <button mat-raised-button color="primary" class="action-btn" 
+                    (click)="navigateTo('/employees/new')">
+              <mat-icon>person_add</mat-icon>
+              Add Employee
+            </button>
+            <button mat-raised-button color="accent" class="action-btn"
+                    (click)="navigateTo('/candidates/new')">
+              <mat-icon>work</mat-icon>
+              Add Candidate
+            </button>
+            <button mat-raised-button color="primary" class="action-btn"
+                    (click)="navigateTo('/salaries')">
+              <mat-icon>attach_money</mat-icon>
+              Manage Salaries
+            </button>
+            <button mat-raised-button color="accent" class="action-btn"
+                    (click)="navigateTo('/departments')">
+              <mat-icon>business</mat-icon>
+              View Departments
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Upcoming Anniversaries -->
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>Upcoming Anniversaries</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="anniversary-list">
+            <div *ngFor="let employee of metrics.upcomingAnniversaries" class="anniversary-item">
+              <div class="employee-info">
+                <h4>{{employee.name}}</h4>
+                <span>{{employee.position}}</span>
+              </div>
+              <div class="anniversary-date">
+                <span class="days">{{getDaysUntilAnniversary(employee.hireDate!)}} days</span>
+                <span>{{employee.hireDate | date:'MMM d'}}</span>
+              </div>
+            </div>
+            <div *ngIf="metrics.upcomingAnniversaries.length === 0" class="empty-state">
+              <mat-icon>celebration</mat-icon>
+              <p>No upcoming anniversaries</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Candidate Status -->
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>Candidate Pipeline</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="candidate-stats">
+            <div *ngFor="let status of metrics.candidateStatus" class="status-item">
+              <span class="status-label">{{status.status}}</span>
+              <span class="status-count">{{status.count}}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

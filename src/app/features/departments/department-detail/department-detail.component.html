@@ -1,0 +1,192 @@
+<!-- src/app/features/departments/department-detail/department-detail.component.html -->
+<div class="department-detail-container">
+  <mat-card *ngIf="isLoading" class="loading-card">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    <div class="loading-text">Loading department details...</div>
+  </mat-card>
+
+  <div *ngIf="department && !isLoading" class="department-profile">
+    <!-- Header Section -->
+    <div class="profile-header">
+      <div class="avatar-container">
+        <div class="avatar" [style.background]="avatarColor">
+          {{department.name | initials}}
+        </div>
+      </div>
+      
+      <div class="header-content">
+        <h1 class="department-name">{{department.name}}</h1>
+        <div class="location-container">
+          <mat-chip class="location-chip">
+            <mat-icon class="location-icon">location_on</mat-icon>
+            {{department.location || 'Location not specified'}}
+          </mat-chip>
+          <span class="employee-count">
+            {{getEmployeeCountText()}}
+          </span>
+        </div>
+      </div>
+      
+      <div class="action-buttons">
+        <button mat-stroked-button (click)="onEdit()" class="action-button">
+          <mat-icon>edit</mat-icon> Edit
+        </button>
+        <button mat-raised-button color="primary" (click)="onAddEmployee()" class="action-button">
+          <mat-icon>person_add</mat-icon> Add Employee
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="profile-content">
+      <!-- Left Column -->
+      <div class="left-column">
+        <!-- Department Information Card -->
+        <mat-card class="info-card">
+          <mat-card-header>
+            <mat-card-title>Department Information</mat-card-title>
+            <mat-card-subtitle>Basic details</mat-card-subtitle>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <div class="info-item">
+              <mat-icon>business</mat-icon>
+              <div>
+                <div class="info-label">Department Name</div>
+                <div class="info-value">{{department.name}}</div>
+              </div>
+            </div>
+            
+            <div class="info-item">
+              <mat-icon>location_on</mat-icon>
+              <div>
+                <div class="info-label">Location</div>
+                <div class="info-value">{{department.location || 'Not specified'}}</div>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <mat-icon>account_balance</mat-icon>
+              <div>
+                <div class="info-label">Budget</div>
+                <div class="info-value">{{formatBudget(department.budget)}}</div>
+              </div>
+            </div>
+
+            <div class="info-item" *ngIf="manager">
+              <mat-icon>supervisor_account</mat-icon>
+              <div>
+                <div class="info-label">Department Manager</div>
+                <div class="info-value">{{manager.name}} ({{manager.position}})</div>
+              </div>
+            </div>
+
+            <div class="info-item" *ngIf="!manager && department.managerId">
+              <mat-icon>supervisor_account</mat-icon>
+              <div>
+                <div class="info-label">Department Manager</div>
+                <div class="info-value">Manager not found</div>
+              </div>
+            </div>
+
+            <div class="info-item" *ngIf="!department.managerId">
+              <mat-icon>supervisor_account</mat-icon>
+              <div>
+                <div class="info-label">Department Manager</div>
+                <div class="info-value">Not assigned</div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Description Card -->
+        <mat-card class="info-card" *ngIf="department.description">
+          <mat-card-header>
+            <mat-card-title>Description</mat-card-title>
+            <mat-card-subtitle>Department overview</mat-card-subtitle>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <div class="description-content">
+              {{department.description}}
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-column">
+        <!-- Employees Card -->
+        <mat-card class="info-card">
+          <mat-card-header>
+            <mat-card-title>Department Employees</mat-card-title>
+            <mat-card-subtitle>{{getEmployeeCountText()}}</mat-card-subtitle>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <div *ngIf="employees.length === 0" class="no-employees">
+              <mat-icon>group</mat-icon>
+              <p>No employees in this department</p>
+              <button mat-raised-button color="primary" (click)="onAddEmployee()">
+                <mat-icon>person_add</mat-icon> Add First Employee
+              </button>
+            </div>
+
+            <div *ngIf="employees.length > 0" class="employees-list">
+              <div *ngFor="let employee of employees" class="employee-item" (click)="onViewEmployee(employee.id)">
+                <div class="employee-avatar">
+                  {{employee.name | initials}}
+                </div>
+                <div class="employee-info">
+                  <div class="employee-name">{{employee.name}}</div>
+                  <div class="employee-position">{{employee.position || 'No position specified'}}</div>
+                </div>
+                <mat-icon class="chevron-icon">chevron_right</mat-icon>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Statistics Card -->
+        <mat-card class="info-card">
+          <mat-card-header>
+            <mat-card-title>Department Statistics</mat-card-title>
+            <mat-card-subtitle>Key metrics</mat-card-subtitle>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <div class="stats-grid">
+              <div class="stat-item">
+                <div class="stat-number">{{employees.length}}</div>
+                <div class="stat-label">Total Employees</div>
+              </div>
+              
+              <div class="stat-item">
+                <div class="stat-number">{{getActiveEmployeesCount()}}</div>
+                <div class="stat-label">Active Employees</div>
+              </div>
+              
+              <div class="stat-item">
+                <div class="stat-number">{{getManagerCount()}}</div>
+                <div class="stat-label">Managers</div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Action Card -->
+        <mat-card class="action-card">
+          <mat-card-content>
+            <button mat-stroked-button color="warn" (click)="onDelete()" class="delete-button">
+              <mat-icon>delete</mat-icon> Delete Department
+            </button>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+
+  <a mat-button routerLink="/departments" class="back-button">
+    <mat-icon>arrow_back</mat-icon> Back to Departments
+  </a>
+</div>

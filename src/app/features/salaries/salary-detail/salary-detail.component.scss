@@ -1,0 +1,60 @@
+.salary-detail-container {
+  max-width: 900px;
+  margin: 20px auto;
+}
+
+.detail-section {
+  margin-bottom: 30px;
+
+  .section-title {
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 18px;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  }
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+  .detail-label {
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.7);
+  }
+
+  .detail-value {
+    color: rgba(0, 0, 0, 0.9);
+  }
+}
+
+.history-table {
+  width: 100%;
+  margin-top: 10px;
+
+  th.mat-header-cell {
+    font-weight: 500;
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+}
+
+.loading-icon {
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+@media (max-width: 600px) {
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}

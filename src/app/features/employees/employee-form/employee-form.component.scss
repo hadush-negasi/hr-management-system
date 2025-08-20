@@ -1,0 +1,42 @@
+.form-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.form-field {
+  flex: 1;
+}
+
+mat-card {
+  max-width: 800px;
+  margin: 20px auto;
+}
+mat-expansion-panel {
+  margin-bottom: 16px;
+}
+mat-card-actions {
+  padding: 16px;
+  border-top: 1px solid #e0e0e0;
+}
+
+mat-spinner {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+.error-snackbar {
+  background-color: #f44336;
+  color: white;
+}
+.success-snackbar {
+  background-color: #4caf50;
+  color: white;
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
