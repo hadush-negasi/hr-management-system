@@ -66,8 +66,7 @@ src/
 │   │   └── directives/       # Custom directives
 │   └── app.module.ts         # Root module
 └── assets/                   # Images and static files
-
-
+```
 ---
 
 ## ⚙️ Setup & Installation
@@ -75,6 +74,7 @@ src/
    ```bash
    git clone https://github.com/your-username/hr-management-system.git  
    cd hr-management-system
+   ```
 2. install dependencies
     npm install
 3. Run Locally
