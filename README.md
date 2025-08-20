@@ -9,6 +9,8 @@ You can try it live here: [Demo Link](https://hr-management-system1.netlify.app/
 
 ## 🚀 Features
 - Employee Management (Add, Update, Delete employees)  
+- Department Management(Full CRUD operations)
+- Candidate Management (Full CRUD operations)
 - Salary Management (track multiple salary records, update salaries without losing history)  
 - Dashboard with employee & salary summary  
 - Responsive UI using Angular Material  
@@ -46,6 +48,8 @@ You can try it live here: [Demo Link](https://hr-management-system1.netlify.app/
 ---
 
 ## 📂 Project Structure
+
+```bash
 src/
 ├── app/
 │   ├── core/
@@ -68,7 +72,8 @@ src/
 
 ## ⚙️ Setup & Installation
 1. Clone the repository  
-   git clone https://github.com/your-username/hr-management-system.git
+   ```bash
+   git clone https://github.com/your-username/hr-management-system.git  
    cd hr-management-system
 2. install dependencies
     npm install
